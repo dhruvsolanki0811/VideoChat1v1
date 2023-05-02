@@ -39,7 +39,10 @@ io.on("connection", (socket) => {
         socket.broadcast.to(user.room).emit("PeerJoined", {id:user.id,room:user.room});
         
       }
+    else if(getroomuser(roomId).length>= 2){
+      socket.emit('NotAllowed')
     }
+        }
   });
 
   socket.on("disconnect", () => {

@@ -4,7 +4,6 @@ let users=[]
 const addUser=(id,room)=>{
 const user={id,room}
 users.push(user)
-console.log("d",users)
 return user;
 }
 
@@ -27,7 +26,6 @@ const getroomuser=(room)=>{
             return true
         }
     })
-    console.log(roomusers)
     return roomusers
 }
 module.exports={addUser,getCurrentUser,disconnectUser,getroomuser}

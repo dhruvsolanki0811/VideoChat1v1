@@ -69,6 +69,9 @@ socket.on('PeerLeft',(MemberId) => {
     document.getElementById('user-1').classList.remove('smallFrame')
 })
 
+socket.on("NotAllowed",()=>{
+    window.location = 'lobby.html'
+})
 
 
 
