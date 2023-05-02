@@ -7,7 +7,7 @@ let urlParams = new URLSearchParams(queryString)
 let roomId = urlParams.get('room')
 
 if(!roomId){
-    window.location = 'lobby.html'
+    window.location = 'index.html'
 }
 
 let localStream;
@@ -70,7 +70,7 @@ socket.on('PeerLeft',(MemberId) => {
 })
 
 socket.on("NotAllowed",()=>{
-    window.location = 'lobby.html'
+    window.location = 'index.html'
 })
 
 
