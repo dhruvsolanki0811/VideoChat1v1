@@ -25,9 +25,7 @@ const servers = {
     iceServers:[
         {
             urls:['stun:stun1.l.google.com:19302', 'stun:stun2.l.google.com:19302']
-        },{
-            urls: [ "stun:bn-turn1.xirsys.com" ]
-         }, {
+        }, {
             username: "mligxW9DblMS1X7AYeVQV-4SUCT7k2EpXbF1JWPWTHnooHM-kDddb75VtoROX21TAAAAAGRRCS5EaHJ1dg==",
             credential: "2b0a3b8c-e8e9-11ed-83b0-0242ac140004",
             urls: [
