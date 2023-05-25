@@ -14,11 +14,6 @@ let localStream;
 let remoteStream;
 let peerConnection;
 
-const turnServer = {
-    urls: 'turn:<your-xirsys-subdomain>.xirsys.com:443?transport=tcp',
-    username: '',
-    credential: '<your-xirsys-credential>'
-  };
 
   
 const servers = {
@@ -44,8 +39,8 @@ const servers = {
 
 let constraints = {
     video:{
-        width:{min:640, ideal:1920, max:1920},
-        height:{min:480, ideal:1080, max:1080},
+        width:"min:640, ideal:1920, max:1920",
+        height:"min:480, ideal:1080, max:1080",
     },
     audio:true
 }
