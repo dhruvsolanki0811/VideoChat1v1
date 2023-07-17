@@ -39,8 +39,8 @@ const servers = {
 
 let constraints = {
     video:{
-        width:"min:640, ideal:1920, max:1920",
-        height:"min:480, ideal:1080, max:1080",
+        width: { min: 640, ideal: 1920, max: 1920 },
+    height: { min: 480, ideal: 1080, max: 1080 },
     },
     audio:true
 }
@@ -48,10 +48,10 @@ let constraints = {
 const init=async()=>{
     localStream = await navigator.mediaDevices.getUserMedia(constraints)
 document.getElementById('user-1').srcObject = localStream
-
+socket.emit('UserJoined',{roomId})
 }
 init()
-socket.emit('UserJoined',{roomId})
+
 
 socket.on('PeerJoined',({id,room})=>{
     createOffer(id,roomId)
@@ -111,6 +111,8 @@ let createPeerConnection = async (MemberId) => {
 
     peerConnection.ontrack = (event) => {
         event.streams[0].getTracks().forEach((track) => {
+            console.log('ontrack:', track)
+
             remoteStream.addTrack(track)
         })
     }
