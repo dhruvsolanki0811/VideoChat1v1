@@ -48,7 +48,6 @@ let constraints = {
 const init=async()=>{
     localStream = await navigator.mediaDevices.getUserMedia(constraints)
 document.getElementById('user-1').srcObject = localStream
-document.getElementById('user-1').muted = true
 
 }
 init()
@@ -102,7 +101,7 @@ let createPeerConnection = async (MemberId) => {
 
 
     if(!localStream){
-        localStream = await navigator.mediaDevices.getUserMedia({video:true, audio:false})
+        localStream = await navigator.mediaDevices.getUserMedia(constraints)
         document.getElementById('user-1').srcObject = localStream
     }
 
