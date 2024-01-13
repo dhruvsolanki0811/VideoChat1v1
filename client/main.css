@@ -20,6 +20,8 @@
 
 #user-2{
     display: none;
+    aspect-ratio: 16 / 9; /* Adjust as needed */
+
 }
 
 #screen-share{

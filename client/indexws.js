@@ -86,7 +86,7 @@ socket.on("MessageFromPeer", async (message, MemberId) => {
 socket.on("PeerLeft", (MemberId) => {
   document.getElementById("user-2").style.display = "none";
  
-    document.getElementById("user-1").classList.add("smallFrame");
+    document.getElementById("user-1").classList.remove("smallFrame");
   
 });
 
@@ -101,7 +101,9 @@ let createPeerConnection = async (MemberId) => {
   document.getElementById("user-2").srcObject = remoteStream;
 
     document.getElementById("user-2").style.display = "block";
-  
+    let videoElement = document.getElementById("user-2");
+    videoElement.width = 640; // Set the desired width
+    videoElement.height = 480;
   
     document.getElementById("user-1").classList.add("smallFrame");
   
