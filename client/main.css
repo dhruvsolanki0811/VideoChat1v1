@@ -22,10 +22,27 @@
     display: none;
 }
 
+#screen-share{
+    display: none;
+}
+
 .smallFrame{
     position: fixed;
     top: 20px;
-    left: 20px;
+    left: 10vw;
+    height: 170px;
+    width: 300px;
+    border-radius: 5px;
+    border:2px solid #b366f9;
+    -webkit-box-shadow: 3px 3px 15px -1px rgba(0,0,0,0.77);
+    box-shadow: 3px 3px 15px -1px rgba(0,0,0,0.77);
+    z-index: 999;
+}
+
+.smallFrame2{
+    position: fixed;
+    top: 20px;
+    left: 50vw;
     height: 170px;
     width: 300px;
     border-radius: 5px;
@@ -65,8 +82,98 @@
     background-color: rgb(255,80,80, 1);
 }
 
+.chat-container{
+    display:none;
+    flex-direction: column;
+    padding: 1rem 0.5rem;
+    position: absolute;
+    top: 0;
+    right: 0;
+    z-index: 1000;
+    background-color: 	#1a1b1b;
+    font-size: large;
+    height: 100%;
+    width: 25%;
+    color: white;
+    border:2px solid #b366f9;
+    
+
+}
+
+.chat-input-container{
+    display: flex;
+    gap: 3px;
+}
+
+.chat-input{
+    padding-inline:3px ;
+    border:1px solid #b366f9;
+    outline: none;
+    width: 100%;
+}
+.send-btn{
+    padding: 2px;
+    border: 1px solid #b366f9;
+    background-color: #b366f9;
+    border-radius: 20%;
+}
+
+.chat-btn{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid white ;
+}
+
+.message-grid{
+    display: flex;
+    padding-top: 10px;
+    padding-inline: 5px;
+    padding-bottom: 10px;
+    flex-direction: column;
+    gap: 7px;
+    height: 90vh;
+    overflow-y:scroll;
+
+}
+.msg-user{
+    font-size: small;
+}
+.msg-time{
+    color: #4b4c53;
+    font-size: 10px;
+}
+.message-container{
+    padding: 5px;
+    width: 100%;
+    border: 1px solid #b366f9;
+    border-radius: 5%;
+}
+.msg-message{
+    font-size: medium;
+}
+::-webkit-scrollbar {
+    background-color: #1f2028;
+    width: 0.4rem;
+    height: 5px;
+  }
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: #4b4c53;
+    border-radius: 5px;
+  }
+  
+  ::-webkit-scrollbar-track {
+    background-color: transparent;
+  }
+  
 @media screen and (max-width:600px) {
         .smallFrame{
+            height: 80px;
+            width: 120px;
+        }
+        
+        .smallFrame2{
             height: 80px;
             width: 120px;
         }
@@ -74,5 +181,8 @@
         .control-container img{
             height: 20px;
             width: 20px;
+        }
+        .chat-container{
+            width: 100%;
         }
 }

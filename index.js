@@ -25,7 +25,7 @@ const server = http.createServer(app);
 const port = process.env.PORT;
 
 server.listen(port, () =>
-  console.log(`Example app listening on port ${port}!`.bgGreen)
+  console.log(`Example app listening on port ${port}!`)
 );
 
 const io = socket(server);
@@ -59,5 +59,26 @@ io.on("connection", (socket) => {
 
         socket.to(user.room).emit('MessageFromPeer',data,MemberId)
     }
+  });
+
+  socket.on("MessagePeerScreen", (data,MemberId) => {
+    const user = getCurrentUser(socket.id);
+    if (user) {
+
+        socket.to(user.room).emit('MessageFromPeerScreen',data,MemberId)
+    }
+  });
+
+  socket.on("chat-sent",(message)=>{
+    const user = getCurrentUser(socket.id);
+    if (user) {
+      socket.to(user.room).emit('chat-received',message)
+  }
+  })
+
+
+  socket.on("ScreenSharingStarted", ({ roomId }) => {
+    // Handle screen sharing started event
+    socket.to(roomId).emit("ScreenSharingJoined", socket.id);
   });
 });
