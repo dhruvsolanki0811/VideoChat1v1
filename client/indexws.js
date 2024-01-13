@@ -94,7 +94,6 @@ socket.on("PeerLeft", (MemberId) => {
   document.getElementById("user-2").style.display = "none";
   document.getElementById("screen-2").style.display = "none";
 
-  console.log("aaaaaaaa")
 
   document.getElementById("user-1").classList.remove("smallFrame");
   document.getElementById("user-2").classList.remove("smallFrame2");
@@ -135,7 +134,6 @@ let createPeerConnection = async (MemberId) => {
 
   peerConnection.ontrack = (event) => {
     event.streams[0].getTracks().forEach((track) => {
-      console.log("ontrack:", track);
 
       remoteStream.addTrack(track);
     });
@@ -238,7 +236,6 @@ let ChatShow = async () => {
     document.getElementById("chat-toggle-btn").style.backgroundColor =
       "rgb(255, 80, 80)";
   }
-  console.log(chatBox);
   scrollBottom();
 };
 
@@ -323,13 +320,7 @@ const shareScreenInit = async () => {
       peerConnectionScreen.addTrack(track, localStream);
     });
 
-    // peerConnectionScreen.ontrack = (event) => {
-    //   event.streams[0].getTracks().forEach((track) => {
-    //     console.log("ontrack:", track);
-
-    //     remoteScreenStream.addTrack(track);
-    //   });
-    // };
+ 
 
     peerConnection.onicecandidate = async (event) => {
       if (event.candidate) {
@@ -354,9 +345,10 @@ const shareScreenInit = async () => {
       socket.id,
       { broadcast: true }
     );
+    document.getElementById("screen-btn").style.backgroundColor =
+    "rgb(255, 80, 80)";  
     isScreenSharing=true
   } catch (err){
-    console.warn(err)
     console.error("Permission denied to share screen");
   }
 };
@@ -365,7 +357,6 @@ socket.on("MessagePeerScreen", async (message, MemberId) => {
   message = JSON.parse(message.text);
 
   if (message.type === "offer") {
-    // sendAnswer(MemberId, message.offer);
     peerConnectionScreen = new RTCPeerConnection(servers);
 
     remoteScreenStream = new MediaStream();
@@ -375,8 +366,6 @@ socket.on("MessagePeerScreen", async (message, MemberId) => {
 
     peerConnectionScreen.ontrack = (event) => {
       event.streams[0].getTracks().forEach((track) => {
-        console.log("ontrack:", track);
-
         remoteScreenStream.addTrack(track);
       });
     };
@@ -416,7 +405,6 @@ socket.on("MessagePeerScreen", async (message, MemberId) => {
 
 socket.on("MessageFromPeerScreen", async (message, MemberId) => {
   message = JSON.parse(message.text);
-  console.log(message)
   if (message.type === "offer") {
     peerConnectionScreen = new RTCPeerConnection(servers);
     remoteScreenStream = new MediaStream();
@@ -426,12 +414,10 @@ socket.on("MessageFromPeerScreen", async (message, MemberId) => {
     document.getElementById("screen-2").style.display = "block";  
     peerConnectionScreen.ontrack = (event) => {
       event.streams[0].getTracks().forEach((track) => {
-        console.log("ontrack:", track);
   
         remoteScreenStream.addTrack(track);
       });
     };
-    console.log(peerConnectionScreen)
     peerConnectionScreen.onicecandidate = async (event) => {
       if (event.candidate) {
         // client.sendMessageToPeer({text:JSON.stringify({'type':'candidate', 'candidate':event.candidate})}, MemberId)
@@ -463,17 +449,13 @@ socket.on("MessageFromPeerScreen", async (message, MemberId) => {
   }
 
   if (message.type === "answer") {
-    console.log("1out")
     if (!peerConnectionScreen.currentRemoteDescription) {
-      console.log("1")
       await peerConnectionScreen.setRemoteDescription(message.answer);
     }
   }
 
   if (message.type === "candidate") {
-    console.log("2out")
     if (peerConnectionScreen) {
-      console.log("2")
       peerConnectionScreen.addIceCandidate(message.candidate);
     }
   }
@@ -498,9 +480,7 @@ const screenShareHandle=()=>{
     stopScreenSharing()
     
   }else{
-    shareScreenInit().then(()=>{
-    document.getElementById("screen-btn").style.backgroundColor =
-    "rgb(255, 80, 80)";  })
+    shareScreenInit()
   }
 }
 
