@@ -64,7 +64,6 @@ io.on("connection", (socket) => {
   socket.on("MessagePeerScreen", (data,MemberId) => {
     const user = getCurrentUser(socket.id);
     if (user) {
-
         socket.to(user.room).emit('MessageFromPeerScreen',data,MemberId)
     }
   });
@@ -76,9 +75,15 @@ io.on("connection", (socket) => {
   }
   })
 
-
-  socket.on("ScreenSharingStarted", ({ roomId }) => {
-    // Handle screen sharing started event
-    socket.to(roomId).emit("ScreenSharingJoined", socket.id);
-  });
+  socket.on("screenClosed",()=>{
+    const user = getCurrentUser(socket.id);
+    if (user) {
+      socket.to(user.room).emit('screenClosedByPeer')
+  }
+  })
+ 
 });
+
+
+
+

@@ -7,6 +7,7 @@
 #videos{
     display: grid;
     grid-template-columns: 1fr;
+    gap: 10px;
     height: 100vh;
     overflow:hidden;
 }
@@ -18,9 +19,8 @@
     object-fit: cover;
 }
 
-#user-2{
+#user-2,#screen-1,#screen-2{
     display: none;
-    aspect-ratio: 16 / 9; /* Adjust as needed */
 
 }
 
@@ -30,10 +30,10 @@
 
 .smallFrame{
     position: fixed;
-    top: 20px;
-    left: 10vw;
-    height: 170px;
-    width: 300px;
+    top: 5vh;
+    left: 2vw;
+    height: 100px;
+    width: 120px;
     border-radius: 5px;
     border:2px solid #b366f9;
     -webkit-box-shadow: 3px 3px 15px -1px rgba(0,0,0,0.77);
@@ -43,17 +43,28 @@
 
 .smallFrame2{
     position: fixed;
-    top: 20px;
-    left: 50vw;
-    height: 170px;
-    width: 300px;
+    top: 27vh;
+    left: 2vw;
+    height: 100px;
+    width: 120px;
     border-radius: 5px;
     border:2px solid #b366f9;
     -webkit-box-shadow: 3px 3px 15px -1px rgba(0,0,0,0.77);
     box-shadow: 3px 3px 15px -1px rgba(0,0,0,0.77);
     z-index: 999;
 }
-
+.smallFrame3{
+    position: fixed;
+    top: 49vh;
+    left: 2vw;
+    height: 100px;
+    width: 120px;
+    border-radius: 5px;
+    border:2px solid #b366f9;
+    -webkit-box-shadow: 3px 3px 15px -1px rgba(0,0,0,0.77);
+    box-shadow: 3px 3px 15px -1px rgba(0,0,0,0.77);
+    z-index: 999;
+}
 
 #controls{
     position: fixed;
@@ -176,6 +187,11 @@
         }
         
         .smallFrame2{
+            height: 80px;
+            width: 120px;
+        }
+
+        .smallFrame3{
             height: 80px;
             width: 120px;
         }
