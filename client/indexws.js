@@ -335,24 +335,29 @@ const shareScreenInit = async () => {
     document.getElementById("screen-1").srcObject = localScreenStream;
     peerConnectionScreen = new RTCPeerConnection({
       iceServers: [
-        {
-          urls: [
-            "stun:stun.l.google.com:19302",
-            "stun:stun.anyfirewall.com:3478",
-          ],
-        },
-
-        {
-          url: "turn:turn.anyfirewall.com:443?transport=tcp",
-          credential: "webrtc",
-          username: "webrtc",
-        },
-        {
-          url: "turn:turn.bistri.com:80",
-          credential: "homeo",
-          username: "homeo",
-        },
-        
+          {
+            urls: "stun:stun.relay.metered.ca:80",
+          },
+          {
+            urls: "turn:standard.relay.metered.ca:80",
+            username: "c4a6b94194d96aadd01ff7f5",
+            credential: "FMEKBv3bL0P6df74",
+          },
+          {
+            urls: "turn:standard.relay.metered.ca:80?transport=tcp",
+            username: "c4a6b94194d96aadd01ff7f5",
+            credential: "FMEKBv3bL0P6df74",
+          },
+          {
+            urls: "turn:standard.relay.metered.ca:443",
+            username: "c4a6b94194d96aadd01ff7f5",
+            credential: "FMEKBv3bL0P6df74",
+          },
+          {
+            urls: "turns:standard.relay.metered.ca:443?transport=tcp",
+            username: "c4a6b94194d96aadd01ff7f5",
+            credential: "FMEKBv3bL0P6df74",
+          },
       ],
     });
     document.getElementById("screen-1").srcObject = localScreenStream;
