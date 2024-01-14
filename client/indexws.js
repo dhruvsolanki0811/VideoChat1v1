@@ -306,12 +306,59 @@ document
   .addEventListener("keydown", enterHandle);
 
 
+
+
+
+  const serversScreen = {
+    iceServers: [
+      {
+        urls: ["stun:stun1.l.google.com:19302", "stun:stun2.l.google.com:19302"],
+      },
+      {
+        username:
+          "efQGZNLWPTCTCOTVK7",
+        password: "QN76jlkShBAStzxm",
+        urls: [
+          "relay1.expressturn.com:3478"
+        ],
+      },
+    ],
+  };
+
+
+
+
 const shareScreenInit = async () => {
   try {
     localScreenStream = await navigator.mediaDevices.getDisplayMedia({audio: true, video: true});
     document.getElementById("screen-1").srcObject = localScreenStream;
-    peerConnectionScreen = new RTCPeerConnection(servers);
-    // remoteScreenStream = new MediaStream();
+    peerConnectionScreen = new RTCPeerConnection({
+      iceServers: [
+          {
+            urls: "stun:stun.relay.metered.ca:80",
+          },
+          {
+            urls: "turn:standard.relay.metered.ca:80",
+            username: "690ded46905a8534a8e3d4ec",
+            credential: "R5/A4lgcVNwnE8L8",
+          },
+          {
+            urls: "turn:standard.relay.metered.ca:80?transport=tcp",
+            username: "690ded46905a8534a8e3d4ec",
+            credential: "R5/A4lgcVNwnE8L8",
+          },
+          {
+            urls: "turn:standard.relay.metered.ca:443",
+            username: "690ded46905a8534a8e3d4ec",
+            credential: "R5/A4lgcVNwnE8L8",
+          },
+          {
+            urls: "turns:standard.relay.metered.ca:443?transport=tcp",
+            username: "690ded46905a8534a8e3d4ec",
+            credential: "R5/A4lgcVNwnE8L8",
+          },
+      ],
+    });
     document.getElementById("screen-1").srcObject = localScreenStream;
     document.getElementById("screen-1").style.display = "block";
     document.getElementById("user-1").classList.add("smallFrame");
