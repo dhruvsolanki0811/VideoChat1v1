@@ -310,9 +310,17 @@ const serversScreen = {
       urls: ["stun:stun1.l.google.com:19302", "stun:stun2.l.google.com:19302"],
     },
     {
-      username: "efQGZNLWPTCTCOTVK7",
-      password: "QN76jlkShBAStzxm",
-      urls: ["relay1.expressturn.com:3478"],
+      username:
+        "mligxW9DblMS1X7AYeVQV-4SUCT7k2EpXbF1JWPWTHnooHM-kDddb75VtoROX21TAAAAAGRRCS5EaHJ1dg==",
+      credential: "2b0a3b8c-e8e9-11ed-83b0-0242ac140004",
+      urls: [
+        "turn:bn-turn1.xirsys.com:80?transport=udp",
+        "turn:bn-turn1.xirsys.com:3478?transport=udp",
+        "turn:bn-turn1.xirsys.com:80?transport=tcp",
+        "turn:bn-turn1.xirsys.com:3478?transport=tcp",
+        "turns:bn-turn1.xirsys.com:443?transport=tcp",
+        "turns:bn-turn1.xirsys.com:5349?transport=tcp",
+      ],
     },
   ],
 };
@@ -330,26 +338,7 @@ const shareScreenInit = async () => {
         {
           urls: "stun:stun.relay.metered.ca:80",
         },
-        {
-          urls: "turn:standard.relay.metered.ca:80",
-          username: "690ded46905a8534a8e3d4ec",
-          credential: "R5/A4lgcVNwnE8L8",
-        },
-        {
-          urls: "turn:standard.relay.metered.ca:80?transport=tcp",
-          username: "690ded46905a8534a8e3d4ec",
-          credential: "R5/A4lgcVNwnE8L8",
-        },
-        {
-          urls: "turn:standard.relay.metered.ca:443",
-          username: "690ded46905a8534a8e3d4ec",
-          credential: "R5/A4lgcVNwnE8L8",
-        },
-        {
-          urls: "turns:standard.relay.metered.ca:443?transport=tcp",
-          username: "690ded46905a8534a8e3d4ec",
-          credential: "R5/A4lgcVNwnE8L8",
-        },
+        { urls: 'turns:freeturn.tel:5349', username: 'free', credential: 'free' } 
       ],
     });
     document.getElementById("screen-1").srcObject = localScreenStream;
@@ -391,7 +380,7 @@ const shareScreenInit = async () => {
     console.error("Permission denied to share screen");
     if (!isScreenSharing) {
       Toastify({
-        text: err.message,
+        text: "WebRtc currently doesnt allow mobile browser to share screen!",
         duration: 3000,
         close: true,
         gravity: "top", // `top` or `bottom`
