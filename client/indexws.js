@@ -334,24 +334,20 @@ const shareScreenInit = async () => {
     isScreenSharing = true;
     document.getElementById("screen-1").srcObject = localScreenStream;
     peerConnectionScreen = new RTCPeerConnection({
-      iceServers: [
-        {
-          urls: ["stun:stun1.l.google.com:19302", "stun:stun2.l.google.com:19302"],
-        },
-        {
-          username:
-            "mligxW9DblMS1X7AYeVQV-4SUCT7k2EpXbF1JWPWTHnooHM-kDddb75VtoROX21TAAAAAGRRCS5EaHJ1dg==",
-          credential: "2b0a3b8c-e8e9-11ed-83b0-0242ac140004",
-          urls: [
+      iceServers: [{
+        urls: [ "stun:bn-turn1.xirsys.com" ]
+     }, {
+        username: "KHDtSQnF5xRF7W9gnX19VQceW_Kh4lZT5ArIHWaxcUudV-rYUWlENAsj1GnX-cqVAAAAAGWjqAxEaHJ1dg==",
+        credential: "912f75f4-b2be-11ee-b671-0242ac140004",
+        urls: [
             "turn:bn-turn1.xirsys.com:80?transport=udp",
             "turn:bn-turn1.xirsys.com:3478?transport=udp",
             "turn:bn-turn1.xirsys.com:80?transport=tcp",
             "turn:bn-turn1.xirsys.com:3478?transport=tcp",
             "turns:bn-turn1.xirsys.com:443?transport=tcp",
-            "turns:bn-turn1.xirsys.com:5349?transport=tcp",
-          ],
-        }, 
-      ],
+            "turns:bn-turn1.xirsys.com:5349?transport=tcp"
+        ]
+     }]
     });
     document.getElementById("screen-1").srcObject = localScreenStream;
     document.getElementById("screen-1").style.display = "block";
