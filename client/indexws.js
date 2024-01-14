@@ -25,12 +25,10 @@ let remoteStream;
 let peerConnection;
 let screenStream;
 
-
-
 let localScreenStream;
 let peerConnectionScreen;
 let remoteScreenStream;
-let isScreenSharing=false;
+let isScreenSharing = false;
 
 const servers = {
   iceServers: [
@@ -69,6 +67,9 @@ const init = async () => {
 init();
 
 socket.on("PeerJoined", ({ id, room }) => {
+  if (isScreenSharing) {
+    stopScreenSharing();
+  }
   createOffer(id, roomId);
 });
 
@@ -94,16 +95,15 @@ socket.on("PeerLeft", (MemberId) => {
   document.getElementById("user-2").style.display = "none";
   document.getElementById("screen-2").style.display = "none";
 
-
   document.getElementById("user-1").classList.remove("smallFrame");
   document.getElementById("user-2").classList.remove("smallFrame2");
 
-  if(isScreenSharing){
-  stopScreenSharing()}
+  if (isScreenSharing) {
+    stopScreenSharing();
+  }
 
   document.getElementById("screen-1").style.display = "none";
   document.getElementById("screen-1").classList.remove("smallFrame3");
-
 });
 
 socket.on("NotAllowed", () => {
@@ -134,7 +134,6 @@ let createPeerConnection = async (MemberId) => {
 
   peerConnection.ontrack = (event) => {
     event.streams[0].getTracks().forEach((track) => {
-
       remoteStream.addTrack(track);
     });
   };
@@ -305,69 +304,63 @@ document
   .getElementsByClassName("chat-input")[0]
   .addEventListener("keydown", enterHandle);
 
-
-
-
-
-  const serversScreen = {
-    iceServers: [
-      {
-        urls: ["stun:stun1.l.google.com:19302", "stun:stun2.l.google.com:19302"],
-      },
-      {
-        username:
-          "efQGZNLWPTCTCOTVK7",
-        password: "QN76jlkShBAStzxm",
-        urls: [
-          "relay1.expressturn.com:3478"
-        ],
-      },
-    ],
-  };
-
-
-
+const serversScreen = {
+  iceServers: [
+    {
+      urls: ["stun:stun1.l.google.com:19302", "stun:stun2.l.google.com:19302"],
+    },
+    {
+      username: "efQGZNLWPTCTCOTVK7",
+      password: "QN76jlkShBAStzxm",
+      urls: ["relay1.expressturn.com:3478"],
+    },
+  ],
+};
 
 const shareScreenInit = async () => {
   try {
-    localScreenStream = await navigator.mediaDevices.getDisplayMedia({audio: true, video: true});
+    localScreenStream = await navigator.mediaDevices.getDisplayMedia({
+      audio: true,
+      video: true,
+    });
+    isScreenSharing = true;
     document.getElementById("screen-1").srcObject = localScreenStream;
     peerConnectionScreen = new RTCPeerConnection({
       iceServers: [
-          {
-            urls: "stun:stun.relay.metered.ca:80",
-          },
-          {
-            urls: "turn:standard.relay.metered.ca:80",
-            username: "690ded46905a8534a8e3d4ec",
-            credential: "R5/A4lgcVNwnE8L8",
-          },
-          {
-            urls: "turn:standard.relay.metered.ca:80?transport=tcp",
-            username: "690ded46905a8534a8e3d4ec",
-            credential: "R5/A4lgcVNwnE8L8",
-          },
-          {
-            urls: "turn:standard.relay.metered.ca:443",
-            username: "690ded46905a8534a8e3d4ec",
-            credential: "R5/A4lgcVNwnE8L8",
-          },
-          {
-            urls: "turns:standard.relay.metered.ca:443?transport=tcp",
-            username: "690ded46905a8534a8e3d4ec",
-            credential: "R5/A4lgcVNwnE8L8",
-          },
+        {
+          urls: "stun:stun.relay.metered.ca:80",
+        },
+        {
+          urls: "turn:standard.relay.metered.ca:80",
+          username: "690ded46905a8534a8e3d4ec",
+          credential: "R5/A4lgcVNwnE8L8",
+        },
+        {
+          urls: "turn:standard.relay.metered.ca:80?transport=tcp",
+          username: "690ded46905a8534a8e3d4ec",
+          credential: "R5/A4lgcVNwnE8L8",
+        },
+        {
+          urls: "turn:standard.relay.metered.ca:443",
+          username: "690ded46905a8534a8e3d4ec",
+          credential: "R5/A4lgcVNwnE8L8",
+        },
+        {
+          urls: "turns:standard.relay.metered.ca:443?transport=tcp",
+          username: "690ded46905a8534a8e3d4ec",
+          credential: "R5/A4lgcVNwnE8L8",
+        },
       ],
     });
     document.getElementById("screen-1").srcObject = localScreenStream;
     document.getElementById("screen-1").style.display = "block";
-    document.getElementById("user-1").classList.add("smallFrame");
+    if (peerConnection) {
+      document.getElementById("user-1").classList.add("smallFrame");
+    }
     document.getElementById("screen-1").classList.add("smallFrame3");
     localScreenStream.getTracks().forEach((track) => {
       peerConnectionScreen.addTrack(track, localStream);
     });
-
- 
 
     peerConnection.onicecandidate = async (event) => {
       if (event.candidate) {
@@ -393,10 +386,26 @@ const shareScreenInit = async () => {
       { broadcast: true }
     );
     document.getElementById("screen-btn").style.backgroundColor =
-    "rgb(255, 80, 80)";  
-    isScreenSharing=true
-  } catch (err){
+      "rgb(255, 80, 80)";
+  } catch (err) {
     console.error("Permission denied to share screen");
+    if (!isScreenSharing) {
+      Toastify({
+        text: err.message,
+        duration: 3000,
+        close: true,
+        gravity: "top", // `top` or `bottom`
+        position: "center", // `left`, `center` or `right`
+        stopOnFocus: true, // Prevents dismissing of toast on hover
+        style: {
+          background: "red",
+          color: "white",
+        },
+      }).showToast();
+    } else {
+      document.getElementById("screen-btn").style.backgroundColor =
+        "rgb(255, 80, 80)";
+    }
   }
 };
 
@@ -443,25 +452,23 @@ socket.on("MessagePeerScreen", async (message, MemberId) => {
     );
   }
 
-  
   document.getElementById("user-2").srcObject = remoteStream;
 
   document.getElementById("user-2").style.display = "block";
 });
-
 
 socket.on("MessageFromPeerScreen", async (message, MemberId) => {
   message = JSON.parse(message.text);
   if (message.type === "offer") {
     peerConnectionScreen = new RTCPeerConnection(servers);
     remoteScreenStream = new MediaStream();
+
     document.getElementById("user-2").classList.add("smallFrame2");
 
     document.getElementById("screen-2").srcObject = remoteScreenStream;
-    document.getElementById("screen-2").style.display = "block";  
+    document.getElementById("screen-2").style.display = "block";
     peerConnectionScreen.ontrack = (event) => {
       event.streams[0].getTracks().forEach((track) => {
-  
         remoteScreenStream.addTrack(track);
       });
     };
@@ -483,16 +490,15 @@ socket.on("MessageFromPeerScreen", async (message, MemberId) => {
     };
     await peerConnectionScreen.setRemoteDescription(message.offer);
     let answer = await peerConnectionScreen.createAnswer();
-  await peerConnectionScreen.setLocalDescription(answer);
+    await peerConnectionScreen.setLocalDescription(answer);
 
-  // client.sendMessageToPeer({text:JSON.stringify({'type':'answer', 'answer':answer})}, MemberId)
-  socket.emit(
-    "MessagePeerScreen",
-    { text: JSON.stringify({ type: "answer", answer: answer }) },
-    MemberId,
-    { broadcast: true }
-  );
-
+    // client.sendMessageToPeer({text:JSON.stringify({'type':'answer', 'answer':answer})}, MemberId)
+    socket.emit(
+      "MessagePeerScreen",
+      { text: JSON.stringify({ type: "answer", answer: answer }) },
+      MemberId,
+      { broadcast: true }
+    );
   }
 
   if (message.type === "answer") {
@@ -508,33 +514,33 @@ socket.on("MessageFromPeerScreen", async (message, MemberId) => {
   }
 });
 
-const stopScreenSharing=async()=>{
-  localScreenStream.getTracks().forEach(track => track.stop());
-      document.getElementById("screen-1").style.display = "none";
-      if(document.getElementById("screen-2").style.display == "none"){
-      document.getElementById("user-2").classList.remove("smallFrame2")};
-      socket.emit("screenClosed")
-      isScreenSharing = false;
+const stopScreenSharing = async () => {
+  localScreenStream.getTracks().forEach((track) => track.stop());
+  document.getElementById("screen-1").style.display = "none";
+  if (document.getElementById("screen-2").style.display == "none") {
+    document.getElementById("user-2").classList.remove("smallFrame2");
+  }
+  socket.emit("screenClosed");
+  isScreenSharing = false;
   if (peerConnectionScreen) {
     peerConnectionScreen.close();
     peerConnectionScreen = null;
   }
   document.getElementById("screen-btn").style.backgroundColor =
-  "rgb(179, 102, 249, .9)";
-}
-const screenShareHandle=()=>{
-  if(isScreenSharing){
-    stopScreenSharing()
-    
-  }else{
-    shareScreenInit()
+    "rgb(179, 102, 249, .9)";
+};
+const screenShareHandle = () => {
+  if (isScreenSharing) {
+    stopScreenSharing();
+  } else {
+    shareScreenInit();
   }
-}
+};
 
-socket.on("screenClosedByPeer",()=>{
-  document.getElementById("screen-2").style.display="none";
-  document.getElementById("user-2").classList.remove("smallFrame2")
-})
+socket.on("screenClosedByPeer", () => {
+  document.getElementById("screen-2").style.display = "none";
+  document.getElementById("user-2").classList.remove("smallFrame2");
+});
 document
   .getElementById("screen-btn")
   .addEventListener("click", screenShareHandle);
