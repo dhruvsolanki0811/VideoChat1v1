@@ -308,7 +308,7 @@ document
 
 const shareScreenInit = async () => {
   try {
-    localScreenStream = await navigator.mediaDevices.getDisplayMedia();
+    localScreenStream = await navigator.mediaDevices.getDisplayMedia({audio: true, video: true});
     document.getElementById("screen-1").srcObject = localScreenStream;
     peerConnectionScreen = new RTCPeerConnection(servers);
     // remoteScreenStream = new MediaStream();
