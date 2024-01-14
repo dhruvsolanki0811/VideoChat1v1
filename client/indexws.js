@@ -334,20 +334,26 @@ const shareScreenInit = async () => {
     isScreenSharing = true;
     document.getElementById("screen-1").srcObject = localScreenStream;
     peerConnectionScreen = new RTCPeerConnection({
-      iceServers: [{
-        urls: [ "stun:bn-turn1.xirsys.com" ]
-     }, {
-        username: "KHDtSQnF5xRF7W9gnX19VQceW_Kh4lZT5ArIHWaxcUudV-rYUWlENAsj1GnX-cqVAAAAAGWjqAxEaHJ1dg==",
-        credential: "912f75f4-b2be-11ee-b671-0242ac140004",
-        urls: [
-            "turn:bn-turn1.xirsys.com:80?transport=udp",
-            "turn:bn-turn1.xirsys.com:3478?transport=udp",
-            "turn:bn-turn1.xirsys.com:80?transport=tcp",
-            "turn:bn-turn1.xirsys.com:3478?transport=tcp",
-            "turns:bn-turn1.xirsys.com:443?transport=tcp",
-            "turns:bn-turn1.xirsys.com:5349?transport=tcp"
-        ]
-     }]
+      iceServers: [
+        {
+          urls: [
+            "stun:stun.l.google.com:19302",
+            "stun:stun.anyfirewall.com:3478",
+          ],
+        },
+
+        {
+          url: "turn:turn.anyfirewall.com:443?transport=tcp",
+          credential: "webrtc",
+          username: "webrtc",
+        },
+        {
+          url: "turn:turn.bistri.com:80",
+          credential: "homeo",
+          username: "homeo",
+        },
+        
+      ],
     });
     document.getElementById("screen-1").srcObject = localScreenStream;
     document.getElementById("screen-1").style.display = "block";
@@ -385,7 +391,7 @@ const shareScreenInit = async () => {
     document.getElementById("screen-btn").style.backgroundColor =
       "rgb(255, 80, 80)";
   } catch (err) {
-    console.error("Permission denied to share screen");
+    console.error("Permission denied to share screen", err);
     if (!isScreenSharing) {
       Toastify({
         text: "WebRtc currently doesnt allow mobile browser to share screen!",
